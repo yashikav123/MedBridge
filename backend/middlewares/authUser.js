@@ -5,6 +5,7 @@ const authUser = async (req, res, next) => {
   try {
     const { token } = req.headers;
     console.log("Token sent to backend:", token);
+
     if (!token) {
       return res.status(401).json({
         success: false,
@@ -12,7 +13,6 @@ const authUser = async (req, res, next) => {
       });
     }
 
-    // Decode and verify the token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     if (!decoded?.id) {
@@ -22,9 +22,7 @@ const authUser = async (req, res, next) => {
       });
     }
 
-    // Attach user ID to request object
-    req.userId = decoded.id;
-
+    req.userId = decoded.id; // ✅ Use this key throughout your controllers
     next();
   } catch (error) {
     console.error("authUser middleware error:", error.message);

@@ -1,6 +1,6 @@
 import './index.css';  
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -24,6 +24,7 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/doctors' element={<Doctors />} />
+        <Route path="/home" element={<Navigate to="/" />} /> 
         <Route path='/doctors/:speciality' element={<Doctors />} />  {/* This route filters by speciality */}
         <Route path='/find-doctors' element={<Doctors />} />
         <Route path='/login' element={<Login />} />

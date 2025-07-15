@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+// Create context
 export const AppContext = React.createContext();
+
+// ✅ Currency formatting function
+const currency = (amount) => `₹${amount}`;
 
 const AppContextProvider = (props) => {
   const [doctors, setDoctors] = useState([]);
@@ -12,6 +16,7 @@ const AppContextProvider = (props) => {
   const currencySymbol = '₹';
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
+  // Fetch doctor list
   const getDoctorsData = async () => {
     try {
       const { data } = await axios.get(`${backendUrl}/api/doctor/list`);
@@ -26,18 +31,19 @@ const AppContextProvider = (props) => {
     }
   };
 
+  // Load logged-in user's profile
   const loadUserProfileData = async () => {
     try {
       const response = await axios.get(`${backendUrl}/api/user/profile`, {
         headers: {
-          token: token
-        }
+          token: token, // ✅ Custom token header
+        },
       });
 
       const { data } = response;
 
       if (data.success) {
-        setUserData(data.user); // 👈 this should match backend response
+        setUserData(data.user);
       } else {
         toast.error(data.message || 'Failed to load profile.');
       }
@@ -69,6 +75,7 @@ const AppContextProvider = (props) => {
     userData,
     setUserData,
     loadUserProfileData,
+    currency, // ✅ Added to context
   };
 
   return (
